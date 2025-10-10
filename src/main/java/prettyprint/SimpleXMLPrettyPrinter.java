@@ -3,13 +3,13 @@ package prettyprint;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class XMLPrettyPrinter {
+public class SimpleXMLPrettyPrinter {
     private int indentSpaces;
 
-    public XMLPrettyPrinter() {
+    public SimpleXMLPrettyPrinter() {
         this.indentSpaces = 2;
     }
-    public XMLPrettyPrinter(int indentSpaces) {
+    public SimpleXMLPrettyPrinter(int indentSpaces) {
         this.indentSpaces = indentSpaces;
     }
 
@@ -27,7 +27,7 @@ public class XMLPrettyPrinter {
         Matcher matcher = pattern.matcher(xml);
         StringBuilder result = new StringBuilder();
         int indentLevel = 0;
-        boolean expectText = false;
+        boolean hasText = false;
 
         while (matcher.find()) {
             String token = matcher.group(0);
@@ -40,7 +40,13 @@ public class XMLPrettyPrinter {
                 result.append(getIndent(indentLevel)).append(token).append("\n");
             } else if (token.startsWith("</")) {
                 indentLevel--;
-                result.append(getIndent(indentLevel)).append(token).append("\n");
+                if (hasText){
+                    result.append(token);
+                    hasText = false;
+                    result.append("\n");
+                } else{
+                    result.append(getIndent(indentLevel)).append(token).append("\n");
+                }
             } else if (token.endsWith("/>")) {
                 result.append(getIndent(indentLevel)).append(token).append("\n");
             } else if (token.startsWith("<") && !token.startsWith("</")) {
@@ -48,16 +54,13 @@ public class XMLPrettyPrinter {
                 indentLevel++;
                 String remaining = xml.substring(matcher.end());
                 if (!remaining.trim().startsWith("<") && !remaining.trim().isEmpty()) {
-                    expectText = true;
+                    hasText = true;
                 }
                 else {
                     result.append("\n");
                 }
             } else {
-                if (expectText) {
-                    result.append(token);
-                    expectText = false;
-                }
+                result.append(token.trim());
             }
 
         }
