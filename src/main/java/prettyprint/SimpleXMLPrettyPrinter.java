@@ -1,5 +1,6 @@
 package prettyprint;
 
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,6 +68,10 @@ public class SimpleXMLPrettyPrinter {
 
         return result.toString();
     }
+
+
+
+
 
     private String getIndent(int level) {
         return " ".repeat(level * indentSpaces);
