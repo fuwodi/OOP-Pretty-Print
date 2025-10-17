@@ -21,8 +21,6 @@ public abstract class XmlFormatter {
 
     public String escapeText(String text) {
         return text.replace("&", "&amp;")
-                .replace("<", "&lt;")
-                .replace(">", "&gt;")
                 .replace("\"", "&quot;")
                 .replace("'", "&apos;");
     }
