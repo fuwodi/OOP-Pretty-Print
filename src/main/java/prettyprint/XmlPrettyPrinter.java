@@ -36,4 +36,26 @@ public class XmlPrettyPrinter {
         String xmlContent = Files.readString(Path.of(filePath));
         return formatString(xmlContent, autoCloseTags, indentSpaces);
     }
+
+    public static void formatFileInPlace(String filePath, boolean autoCloseTags, int indentSpaces) throws IOException {
+        String xmlContent = Files.readString(Path.of(filePath));
+        String formattedXml = formatString(xmlContent, autoCloseTags, indentSpaces);
+        Files.writeString(Path.of(filePath), formattedXml);
+    }
+
+    public static void formatFileToFile(String inputFilePath, String outputFilePath) throws IOException {
+        formatFileToFile(inputFilePath, outputFilePath, false, 2);
+    }
+
+    public static void formatFileToFile(String inputFilePath, String outputFilePath, boolean autoCloseTags) throws IOException {
+        formatFileToFile(inputFilePath, outputFilePath, autoCloseTags, 2);
+    }
+
+    public static void formatFileToFile(String inputFilePath, String outputFilePath, boolean autoCloseTags, int indentSpaces) throws IOException {
+        String xmlContent = Files.readString(Path.of(inputFilePath));
+        String formattedXml = formatString(xmlContent, autoCloseTags, indentSpaces);
+        Files.writeString(Path.of(outputFilePath), formattedXml);
+    }
+
+
 }
